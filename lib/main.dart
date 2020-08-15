@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 // TOPページのステータス管理
 class _MyHomePageState extends State<MyHomePage> {
   // todoの一覧リスト変数を用意
-  List<String> todoList = <String>[];
+  List<String> todoList = [];
 
   // テキストフィールドのコントローラー設定
   // コントローラーの宣言
