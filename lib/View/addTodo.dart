@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mytodo/View/todoList.dart';
+import 'package:mytodo/Model/todoModel.dart';
 
 class AddTodo extends StatefulWidget {
   @override
@@ -8,7 +8,7 @@ class AddTodo extends StatefulWidget {
 
 class _AddTodoState extends State<AddTodo> {
   // todoの一覧リスト変数を用意
-  List<String> todoList = [];
+  TodoModel todoItem;
 
   // テキストフィールドのコントローラー設定
   // コントローラーの宣言
@@ -33,7 +33,7 @@ class _AddTodoState extends State<AddTodo> {
       // アプリ上部のコンテンツ設定
       backgroundColor: Colors.teal[100],
       appBar: AppBar(
-        title: Text("TODO一覧"),
+        title: Text("TODO追加"),
       ),
       // アプリのコンテンツ部分の設定
       body: Column(
@@ -56,17 +56,16 @@ class _AddTodoState extends State<AddTodo> {
               child: Text('保存'),
               onPressed: () {
                 // 変数の変化をリアルタイムに通知する
-                setState(
-                  () {
-                    // 何かしらの入力があるときだけ実行
-                    if (_todoInputController.text.length > 0) {
-                      // 配列に入力値を追加
-                      todoList.add(_todoInputController.text);
-                      // テキストボックスを初期化
-                      _todoInputController.clear();
-                    }
-                  },
-                );
+                // 何かしらの入力があるときだけ実行
+                if (_todoInputController.text.length > 0) {
+                  // 配列に入力値を追加
+                  todoItem = TodoModel(
+                    title: _todoInputController.text,
+                  );
+                  // テキストボックスを初期化
+                  _todoInputController.clear();
+                  Navigator.of(context).pop(todoItem);
+                }
               },
             ),
           ),

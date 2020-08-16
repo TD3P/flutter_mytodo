@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mytodo/View/addTodo.dart';
+import 'package:mytodo/Model/todoModel.dart';
 
 // TOPページ
 class TodoList extends StatefulWidget {
@@ -12,7 +12,7 @@ class TodoList extends StatefulWidget {
 // TOPページのステータス管理
 class _TodoListState extends State<TodoList> {
   // todoの一覧リスト変数を用意
-  List<String> todoList = [];
+  List<TodoModel> todoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +38,8 @@ class _TodoListState extends State<TodoList> {
               leading: Icon(Icons.star),
               title: Text(
                 // リストに表示する文字列を設定
-                ("$index : ${todoList[index]}"),
+                ("$index : ${todoList[index].title}"),
                 style: TextStyle(
-                  fontFamily: 'OpenSans',
                   fontSize: 24,
                   color: Colors.white,
                 ),
@@ -50,17 +49,13 @@ class _TodoListState extends State<TodoList> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        // onPressed: () {
-        //   Navigator.of(context).push(
-        //     MaterialPageRoute(
-        //       builder: (context) {
-        //         return AddTodo();
-        //       },
-        //     ),
-        //   );
-        // },
-        onPressed: () {
-          Navigator.of(context).pushNamed('/add');
+        onPressed: () async {
+          final result = await Navigator.of(context).pushNamed('/add');
+          if (result != null) {
+            setState(() {
+              todoList.add(result);
+            });
+          }
         },
         child: const Icon(
           Icons.add,
