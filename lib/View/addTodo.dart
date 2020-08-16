@@ -7,7 +7,7 @@ class AddTodo extends StatefulWidget {
 }
 
 class _AddTodoState extends State<AddTodo> {
-  // todoの一覧リスト変数を用意
+  // todoモデルを用意
   TodoModel todoItem;
 
   // テキストフィールドのコントローラー設定
@@ -26,50 +26,63 @@ class _AddTodoState extends State<AddTodo> {
     _todoInputController.dispose();
   }
 
+  // テキストの内容を渡しつつ画面遷移
+  void _addTodo() {
+    // 何かしらの入力があるときだけ実行
+    if (_todoInputController.text.length > 0) {
+      // 配列に入力値を追加
+      todoItem = TodoModel(
+        title: _todoInputController.text,
+      );
+      // テキストボックスを初期化
+      _todoInputController.clear();
+      Navigator.of(context).pop(todoItem);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // scaffoldは画面構成の基本widget
     return Scaffold(
-      // アプリ上部のコンテンツ設定
+      // 背景色
       backgroundColor: Colors.teal[100],
+
+      // アプリ上部のコンテンツ設定
       appBar: AppBar(
         title: Text("TODO追加"),
       ),
+
       // アプリのコンテンツ部分の設定
-      body: Column(
-        // column widgetにwidgetのセットを配列で渡す
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: TextField(
-              controller: _todoInputController,
-              decoration: InputDecoration(hintText: '入力してください'),
-              autofocus: true,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: TextField(
+                controller: _todoInputController,
+                maxLength: 8,
+                decoration: InputDecoration(
+                  labelText: 'TODO title',
+                  hintText: '入力してください',
+                  icon: Icon(Icons.done),
+                ),
+                autofocus: true,
+                onEditingComplete: _addTodo,
+              ),
             ),
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(top: 0.0, right: 0.0, bottom: 30.0, left: 0.0),
-            child: RaisedButton(
-              color: Colors.teal[400],
-              textColor: Colors.white,
-              child: Text('保存'),
-              onPressed: () {
-                // 変数の変化をリアルタイムに通知する
-                // 何かしらの入力があるときだけ実行
-                if (_todoInputController.text.length > 0) {
-                  // 配列に入力値を追加
-                  todoItem = TodoModel(
-                    title: _todoInputController.text,
-                  );
-                  // テキストボックスを初期化
-                  _todoInputController.clear();
-                  Navigator.of(context).pop(todoItem);
-                }
-              },
+            Padding(
+              padding: EdgeInsets.only(
+                  top: 0.0, right: 0.0, bottom: 30.0, left: 0.0),
+              child: RaisedButton(
+                color: Colors.teal[400],
+                textColor: Colors.white,
+                child: Text('保存'),
+                onPressed: _addTodo,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
