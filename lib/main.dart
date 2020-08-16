@@ -17,7 +17,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TodoList(),
+      initialRoute: '/',
+      routes: {
+        '/': (_) => TodoList(),
+        '/add': (_) => AddTodo(),
+      },
     );
   }
 }
