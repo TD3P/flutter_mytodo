@@ -71,13 +71,40 @@ class _TodoListState extends State<TodoList> {
   }
 
   Widget _listCard(index) {
+    void _setDoneFlag() {
+      setState(() {
+        // 何かしらの入力があるときだけ実行
+        if (todoList[index].done) {
+          todoList[index].done = false;
+        } else {
+          todoList[index].done = true;
+        }
+      });
+    }
+
     return Card(
       color: Colors.cyan[600],
       child: ListTile(
-        leading: Icon(Icons.star),
+        leading: ButtonTheme(
+          minWidth: 40,
+          height: 50,
+          child: FlatButton(
+            onPressed: _setDoneFlag,
+            child: todoList[index].done
+                ? Icon(
+                    Icons.done,
+                    color: Colors.white,
+                  )
+                : Icon(
+                    Icons.done_outline,
+                    color: Colors.grey[400],
+                  ),
+          ),
+        ),
         title: Text(
           // リストに表示する文字列を設定
-          ("$index : ${todoList[index].title}"),
+          // ("$index : ${todoList[index].title}"),
+          ("$index : ${todoList[index].done}"),
           style: TextStyle(
             fontSize: 24,
             color: Colors.white,
