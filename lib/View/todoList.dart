@@ -31,7 +31,26 @@ class _TodoListState extends State<TodoList> {
         // リストの長さを計算
         itemCount: todoList.length,
         itemBuilder: (BuildContext context, int index) {
-          return _listCard(index);
+          final todoItem = todoList[index];
+          return Dismissible(
+            key: Key(todoItem.id),
+            child: _listCard(index),
+            direction: DismissDirection.endToStart,
+            onDismissed: (direction) {
+              setState(() {
+                todoList.removeAt(index);
+              });
+              Scaffold.of(context)
+                  .showSnackBar(SnackBar(content: Text("削除しました")));
+            },
+            background: Container(
+                color: Colors.red,
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+                alignment: Alignment(0.9, 0)),
+          );
         },
       ),
 
@@ -53,7 +72,6 @@ class _TodoListState extends State<TodoList> {
 
   Widget _listCard(index) {
     return Card(
-      margin: EdgeInsets.only(top: 6.0, right: 8.0, bottom: 0.0, left: 8.0),
       color: Colors.cyan[600],
       child: ListTile(
         leading: Icon(Icons.star),
