@@ -79,7 +79,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: ListTile(
             title: Text(rushes.makeOraOra()),
-            trailing: Text(rushes.times.toString()),
+            trailing: FlatButton(
+              onPressed: () {
+                rushes.reference.update({'times': 0});
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.delete,
+                  ),
+                  Text(rushes.times.toString()),
+                ],
+              ),
+            ),
             onTap: () {
               rushes.reference.update({'times': FieldValue.increment(1)});
             }),
